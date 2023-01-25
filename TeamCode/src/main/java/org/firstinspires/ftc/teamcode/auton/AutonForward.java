@@ -45,40 +45,6 @@ public class AutonForward extends LinearOpMode
     // MCODE
     DcMotorEx right = null;
     DcMotorEx left = null;
-    // END MCODE
-
-    // CHANGE CODE
-    // if you have a 1:4 and then a 1:5 then you gear ratio is 1:20
-    // in that case just type 20 in the gear ratio variable value
-    int gearRatio = 20;
-    double wheelRadius = 3.77953/2; // value in inches
-    double wheelCircumference = 2*Math.PI*wheelRadius;
-    double trackWidth = 13.5; // value in inches
-    // go to link to see what track width is
-    //https://learnroadrunner.com/assets/img/wes-bot-edit-half.a0bf7846.jpg
-    double robotLength = 10.5; // value in inches
-    // length is the opposite of width
-    // END CHANGE CODE
-
-    // MCODE
-    HashMap<Integer, Double> actualGearRatio = new HashMap<>();
-    int revMotorTicksPerRotation = 28;
-    int ticksPerRotation = revMotorTicksPerRotation*gearRatio;
-    double actualTicksPerRotation = 0.0;
-    int matLength = 24; // inches
-    int turn90DegTicks = 0;
-    int forwardTicksForMat = 0; // mat is 24x24 inches
-    int forwardTicksForHalfMat = 0;
-    // the variable is meant to hold how many ticks to drive forward 24 inches
-
-    // c^2 = a^2 + b^2 -> c = sqrt(a^2 + b^2)
-    double robotDiameter = Math.sqrt(Math.pow(trackWidth,2)+Math.pow(robotLength,2));
-    double robotRadius = robotDiameter/2.0;
-    // C = 2PIr
-    double robotCircumference = 2*Math.PI*robotRadius;
-    double robotHalfCircumference = robotCircumference/2.0;
-
-    // END MCODE
 
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
@@ -98,30 +64,14 @@ public class AutonForward extends LinearOpMode
     double tagsize = 0.166;
 
     //    int ID_TAG_OF_INTEREST = 18; // Tag ID 18 from the 36h11 family
-    int LEFT = 3;
-    int MIDDLE = 2;
-    int RIGHT = 1;
+    int FORWARD = 3;
+    int TURN = 2;
 
     AprilTagDetection tagOfInterest = null;
 
     @Override
     public void runOpMode()
     {
-        // MCODE
-        actualGearRatio.put(9, 8.4);
-        actualGearRatio.put(12, 10.5);
-        actualGearRatio.put(15, 15.2);
-        actualGearRatio.put(16, 13.1);
-        actualGearRatio.put(20, 18.9);
-        actualGearRatio.put(25, 27.4);
-        // END MCODE
-
-        // MCODE
-        actualTicksPerRotation = (double)(revMotorTicksPerRotation*actualGearRatio.get(gearRatio));
-        forwardTicksForMat = (int)((matLength/wheelCircumference) * actualTicksPerRotation);
-        forwardTicksForHalfMat = forwardTicksForMat/2;
-        turn90DegTicks = (int)((robotHalfCircumference/wheelCircumference) * actualTicksPerRotation);
-        // END MCODE
 
         //MCODE
         left = hardwareMap.get(DcMotorEx.class, frontLeftM);
@@ -186,7 +136,7 @@ public class AutonForward extends LinearOpMode
 
                 for(AprilTagDetection tag : currentDetections)
                 {
-                    if(tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT)
+                    if(tag.id == FORWARD || tag.id == TURN)
                     {
                         tagOfInterest = tag;
                         tagFound = true;
@@ -253,11 +203,9 @@ public class AutonForward extends LinearOpMode
             telemetry.update();
         }
 
-        if (tagOfInterest == null || tagOfInterest.id == LEFT) {
+        if (tagOfInterest == null || tagOfInterest.id == FORWARD) {
 
-        } else if (tagOfInterest.id == MIDDLE) {
-
-        } else {
+        }else {
 
         }
 
