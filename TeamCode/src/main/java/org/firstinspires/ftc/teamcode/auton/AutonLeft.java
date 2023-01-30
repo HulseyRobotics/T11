@@ -23,6 +23,7 @@ package org.firstinspires.ftc.teamcode.auton;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -32,10 +33,9 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 @Autonomous(name="Auton Forward")
-public class AutonForward extends LinearOpMode
+public class AutonLeft extends LinearOpMode
 {
     // CHANGE CODE(change string according to what you named your motors)
     String frontLeftM = "left";
@@ -64,10 +64,12 @@ public class AutonForward extends LinearOpMode
     double tagsize = 0.166;
 
     //    int ID_TAG_OF_INTEREST = 18; // Tag ID 18 from the 36h11 family
-    int FORWARD = 3;
+    int FORWARD = 1;
     int TURN = 2;
 
     AprilTagDetection tagOfInterest = null;
+
+    public double ticksPerDegree = 7.5;
 
     @Override
     public void runOpMode()
@@ -204,9 +206,11 @@ public class AutonForward extends LinearOpMode
         }
 
         if (tagOfInterest == null || tagOfInterest.id == FORWARD) {
-
+            straight(500,5000);
         }else {
-
+            straight(500,5000);
+            turn(-90,5000);
+            straight(500,5000);
         }
 
 
@@ -217,12 +221,75 @@ public class AutonForward extends LinearOpMode
 
     void tagToTelemetry(AprilTagDetection detection)
     {
-        telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
-        telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x*FEET_PER_METER));
-        telemetry.addLine(String.format("Translation Y: %.2f feet", detection.pose.y*FEET_PER_METER));
-        telemetry.addLine(String.format("Translation Z: %.2f feet", detection.pose.z*FEET_PER_METER));
-        telemetry.addLine(String.format("Rotation Yaw: %.2f degrees", Math.toDegrees(detection.pose.yaw)));
-        telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", Math.toDegrees(detection.pose.pitch)));
-        telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
+        telemetry.addLine("ID = " + detection.id);
+    }
+
+    public void straight(int ticks, int wait) {
+        left.setTargetPosition(ticks);
+        right.setTargetPosition(ticks);
+
+        left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        if (ticks>0) {
+            left.setPower(.4);
+            right.setPower(.4);
+        }else {
+            left.setPower(-.4);
+            right.setPower(-.4);
+        }
+        // END MCODE
+
+        // CHANGE CODE
+        // change value according to how long it takes robot to reach wanted position
+        sleep(wait); // 5 seconds
+        // END CHANGE CODE
+
+        // MCODE
+        left.setPower(0);
+        right.setPower(0);
+        // END MCODE
+
+        // MOVE FORWARD 1.5 MAT LENGTH (END)
+
+        // MCODE
+        left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+    }
+
+
+    public void turn(int degrees, int wait) {
+        left.setTargetPosition((int) (-degrees * ticksPerDegree));
+        right.setTargetPosition((int) (degrees * ticksPerDegree));
+
+        left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        if (degrees>0) {
+            left.setPower(-.1);
+            right.setPower(.1);
+        }else {
+            left.setPower(.1);
+            right.setPower(-.1);
+        }
+        // END MCODE
+
+        // CHANGE CODE
+        // change value according to how long it takes robot to reach wanted position
+        sleep(wait); // 5 seconds
+        // END CHANGE CODE
+
+        // MCODE
+        left.setPower(0);
+        right.setPower(0);
+        // END MCODE
+
+        // MOVE FORWARD 1.5 MAT LENGTH (END)
+
+        // MCODE
+        left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
     }
 }
