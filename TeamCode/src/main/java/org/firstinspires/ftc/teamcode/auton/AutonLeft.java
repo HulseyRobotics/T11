@@ -64,8 +64,8 @@ public class AutonLeft extends LinearOpMode
     double tagsize = 0.166;
 
     //    int ID_TAG_OF_INTEREST = 18; // Tag ID 18 from the 36h11 family
-    int FORWARD = 1;
-    int TURN = 2;
+    int FORWARD = 2;
+    int TURN = 1;
 
     AprilTagDetection tagOfInterest = null;
 
