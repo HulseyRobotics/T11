@@ -34,7 +34,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-@Autonomous(name="Auton Forward")
+@Autonomous(name="Auton left")
 public class AutonLeft extends LinearOpMode
 {
     // CHANGE CODE(change string according to what you named your motors)
@@ -69,7 +69,7 @@ public class AutonLeft extends LinearOpMode
 
     AprilTagDetection tagOfInterest = null;
 
-    public double ticksPerDegree = 7.5;
+    public double ticksPerDegree = 8.3;
 
     @Override
     public void runOpMode()
@@ -206,11 +206,11 @@ public class AutonLeft extends LinearOpMode
         }
 
         if (tagOfInterest == null || tagOfInterest.id == FORWARD) {
-            straight(500,5000);
+            straight(2300,5000);
         }else {
-            straight(500,5000);
+            straight(2300,5000);
             turn(-90,5000);
-            straight(500,5000);
+            straight(1800,5000);
         }
 
 

@@ -34,7 +34,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-@Autonomous(name="Auton Forward")
+@Autonomous(name="Auton right")
 public class AutonRight extends LinearOpMode
 {
     // CHANGE CODE(change string according to what you named your motors)
@@ -64,8 +64,8 @@ public class AutonRight extends LinearOpMode
     double tagsize = 0.166;
 
     //    int ID_TAG_OF_INTEREST = 18; // Tag ID 18 from the 36h11 family
-    int FORWARD = 1;
-    int TURN = 2;
+    int FORWARD = 2;
+    int TURN = 1;
 
     AprilTagDetection tagOfInterest = null;
 
@@ -202,15 +202,16 @@ public class AutonRight extends LinearOpMode
         else
         {
             telemetry.addLine("No tag snapshot available, it was never sighted during the init loop :(");
+
             telemetry.update();
         }
 
         if (tagOfInterest == null || tagOfInterest.id == FORWARD) {
-            straight(500,5000);
+            straight(2300,5000);
         }else {
-            straight(500,5000);
+            straight(2300,5000);
             turn(90,5000);
-            straight(500,5000);
+            straight(1800,5000);
         }
 
 

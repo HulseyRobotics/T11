@@ -16,11 +16,10 @@ public class EquationDriveTele extends OpMode {
 
     public DcMotorEx arm = null;
 
-    public Servo claw = null;
-
+    public Servo claw1 = null;
+    public Servo claw2 = null;
     public int armTarget = 0;
     public int armPos = 0;
-    public int clawPressed = 0;
 
     @Override
     public void init() {
@@ -29,7 +28,8 @@ public class EquationDriveTele extends OpMode {
         right = hardwareMap.get(DcMotorEx.class, "right");
         arm = hardwareMap.get(DcMotorEx.class, "arm");
 
-        claw = hardwareMap.get(Servo.class, "claw");
+        claw1 = hardwareMap.get(Servo.class, "claw1");
+        claw2 = hardwareMap.get(Servo.class, "claw2");
 
         left.setDirection(DcMotorEx.Direction.REVERSE);
         right.setDirection(DcMotorEx.Direction.FORWARD);
@@ -58,14 +58,12 @@ public class EquationDriveTele extends OpMode {
         }
 
         arm = hardwareMap.get(DcMotorEx.class, "arm");
-        claw = hardwareMap.get(Servo.class, "claw");
 
         arm.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         arm.setTargetPosition(0);
         arm.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         arm.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        claw.setPosition(0);
     }
 
     @Override
@@ -114,20 +112,12 @@ public class EquationDriveTele extends OpMode {
 
         //intake
         {
-            if ((gamepad1.left_bumper) && clawPressed == 0) {
-                if (claw.getPosition() < 0.5) {
-                    claw.setPosition(1);
-                } else {
-                    claw.setPosition(0.1);
-                }
-                clawPressed += 1;
-                telemetry.addData("intake", "pressed");
-                telemetry.update();
-            }
-            if ((!gamepad1.left_bumper) && clawPressed > 0) {
-                clawPressed = 0;
-                telemetry.addData("intake", "not pressed");
-                telemetry.update();
+            if ((gamepad1.left_bumper || gamepad1.right_bumper)) {
+                claw1.setPosition(1);
+                claw2.setPosition(0);
+            }else{
+                claw1.setPosition(0);
+                claw2.setPosition(1);
             }
         }
 

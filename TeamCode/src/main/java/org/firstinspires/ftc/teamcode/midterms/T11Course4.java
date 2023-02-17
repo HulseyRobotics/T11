@@ -10,7 +10,7 @@ public class T11Course4 extends LinearOpMode {
     public DcMotor left = null;
     public DcMotor right = null;
 
-    public double ticksPerDegree = 7.5;
+    public double ticksPerDegree = 8.3;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -29,14 +29,7 @@ public class T11Course4 extends LinearOpMode {
 
         //wait for start
         waitForStart();
-        //init over
-        straight(2800,7000);
-        turn(-122, 7000);
-
-        straight(4700,7000);
-        turn(125, 7000);
-
-        straight(3000,100000);
+        turn(90,5000);
 
     }
 
